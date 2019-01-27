@@ -1,17 +1,38 @@
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import React from "react";
+
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+  createAppContainer
+} from "react-navigation";
 
 import Login from "../screens/Login";
 import LocationList from "../screens/LocationList";
 import LocationDetails from "../screens/LocationDetails";
 
-const headerStyleOptions = () => ({
+import Icon from "react-native-vector-icons/MaterialIcons";
+
+const headerStyleOptions = (isBottomTab = false) => ({
   headerMode: "screen",
   defaultNavigationOptions: ({ navigation }) => ({
     headerStyle: {
       backgroundColor: "#2695D2"
     },
     headerTitleStyle: "#FFFFFF",
-    headerTintColor: "#FFFFFF"
+    headerTintColor: "#FFFFFF",
+    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      if (isBottomTab) {
+        const { routeName } = navigation.state;
+        let iconName;
+        if (routeName === "LocationListScreen") {
+          iconName = "home";
+        } else if (routeName === "LocationDetailsScreen") {
+          iconName = "person";
+        }
+
+        return <Icon name={iconName} size={25} color={tintColor} />;
+      }
+    }
   })
 });
 
@@ -28,23 +49,24 @@ const LoginStack = createStackNavigator(
   headerStyleOptions()
 );
 
-// Authenticated route
-const LoggedStack = createStackNavigator(
+const LoggedStack = createBottomTabNavigator(
   {
     LocationListScreen: {
       screen: LocationList,
       navigationOptions: {
-        headerTitle: "Lista de Localizações"
+        headerTitle: "Feed",
+        tabBarLabel: "Feed"
       }
     },
     LocationDetailsScreen: {
       screen: LocationDetails,
       navigationOptions: {
-        headerTitle: "Detalhes da Localização"
+        headerTitle: "Perfil",
+        tabBarLabel: "Perfil"
       }
     }
   },
-  headerStyleOptions()
+  headerStyleOptions(true)
 );
 
 const routeStackNavigator = createStackNavigator(
