@@ -9,8 +9,8 @@ import {
 } from "../actions/apiLogin";
 
 const initialState = {
-  email: null,
-  password: null,
+  email: "eduardo.hensantos@gmail.com",
+  password: "gitcoding1990",
   isApiSubmiting: false,
   apiResultData: null
 };

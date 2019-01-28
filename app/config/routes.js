@@ -7,8 +7,8 @@ import {
 } from "react-navigation";
 
 import Login from "../screens/Login";
-import LocationList from "../screens/LocationList";
-import LocationDetails from "../screens/LocationDetails";
+import UserFeed from "../screens/UserFeed";
+import UserProfile from "../screens/UserProfile";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -24,9 +24,9 @@ const headerStyleOptions = (isBottomTab = false) => ({
       if (isBottomTab) {
         const { routeName } = navigation.state;
         let iconName;
-        if (routeName === "LocationListScreen") {
+        if (routeName === "UserFeedScreen") {
           iconName = "home";
-        } else if (routeName === "LocationDetailsScreen") {
+        } else if (routeName === "UserProfileScreen") {
           iconName = "person";
         }
 
@@ -51,18 +51,18 @@ const LoginStack = createStackNavigator(
 
 const LoggedStack = createBottomTabNavigator(
   {
-    LocationListScreen: {
-      screen: LocationList,
-      navigationOptions: {
-        headerTitle: "Feed",
-        tabBarLabel: "Feed"
-      }
-    },
-    LocationDetailsScreen: {
-      screen: LocationDetails,
+    UserProfileScreen: {
+      screen: UserProfile,
       navigationOptions: {
         headerTitle: "Perfil",
         tabBarLabel: "Perfil"
+      }
+    },
+    UserFeedScreen: {
+      screen: UserFeed,
+      navigationOptions: {
+        headerTitle: "Feed",
+        tabBarLabel: "Feed"
       }
     }
   },
