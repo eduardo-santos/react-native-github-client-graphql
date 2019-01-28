@@ -51,18 +51,18 @@ const LoginStack = createStackNavigator(
 
 const LoggedStack = createBottomTabNavigator(
   {
-    UserProfileScreen: {
-      screen: UserProfile,
-      navigationOptions: {
-        headerTitle: "Perfil",
-        tabBarLabel: "Perfil"
-      }
-    },
     UserFeedScreen: {
       screen: UserFeed,
       navigationOptions: {
         headerTitle: "Feed",
         tabBarLabel: "Feed"
+      }
+    },
+    UserProfileScreen: {
+      screen: UserProfile,
+      navigationOptions: {
+        headerTitle: "Perfil",
+        tabBarLabel: "Perfil"
       }
     }
   },

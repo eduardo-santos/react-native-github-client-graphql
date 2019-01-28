@@ -38,7 +38,9 @@ const styles = StyleSheet.create({
   },
   infoText: {
     marginTop: 36,
-    textAlign: "center"
+    textAlign: "center",
+    bottom: 10,
+    position: "absolute"
   }
 });
 

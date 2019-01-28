@@ -4,7 +4,10 @@ import { View, Text, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 
 import gql from "graphql-tag";
-import { graphql, Query } from "react-apollo";
+import { Query } from "react-apollo";
+
+import SimpleRoundedImage from "../components/RoundedImage/SimpleRoundedImage";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,12 +17,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16
   },
-  subItems: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 4
-  },
   name: {
     fontWeight: "bold",
     fontSize: 20,
@@ -27,29 +24,39 @@ const styles = StyleSheet.create({
     marginTop: 18,
     textAlign: "center"
   },
-  address: {
+  login: {
     fontWeight: "normal",
     fontSize: 18,
     color: "#637381",
-    marginTop: 2,
     textAlign: "center"
+  },
+  defaultValue: {
+    fontWeight: "normal",
+    fontSize: 16,
+    color: "#637381",
+    textAlign: "center"
+  },
+  email: {
+    fontWeight: "normal",
+    fontSize: 16,
+    color: "#2695D2",
+    textAlign: "center"
+  },
+  labeField: {
+    flexDirection: "row",
+    marginTop: 6
+  },
+  icon: {
+    paddingRight: 4
   },
   separator: {
-    height: StyleSheet.hairlineWidth,
-    alignSelf: "stretch",
-    backgroundColor: "#3C4146",
-    marginVertical: 20
+    height: 0.5,
+    width: "100%",
+    backgroundColor: "#000000",
+    marginVertical: 12
   },
-  label: {
-    fontWeight: "bold",
-    fontSize: 18,
-    color: "#637381"
-  },
-  value: {
-    fontWeight: "normal",
-    fontSize: 18,
-    color: "#637381",
-    textAlign: "center"
+  space: {
+    height: 20
   }
 });
 
@@ -57,35 +64,52 @@ const QUERY = gql`
   {
     viewer {
       name
+      login
       email
+      avatarUrl
+      bio
+      location
     }
   }
 `;
 
 class UserProfile extends Component {
-  componentWillMount() {
-    // this.getUserProfileInfo();
-  }
-
   getUserProfileInfo = () => (
     <Query query={QUERY}>
       {({ loading, error, data }) => {
         if (loading) return <Text>Carregando...</Text>;
         if (error) return <Text>Erro :(</Text>;
 
-        const { name, email } = data.viewer;
+        const { name, login, email, avatarUrl, bio, location } = data.viewer;
 
         return (
-          <View>
-            <Text style={styles.value}>{name}</Text>
-            <Text style={styles.value}>{email}</Text>
+          <View style={styles.container}>
+            <SimpleRoundedImage
+              resizeMode="cover"
+              source={{ uri: avatarUrl }}
+              width={130}
+              height={130}
+            />
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.login}>{login}</Text>
+            <View style={styles.separator} />
+            <Text style={styles.defaultValue}>{bio}</Text>
+            <View style={styles.space} />
+            <View style={styles.labeField}>
+              <Icon name="location-on" size={20} style={styles.icon} />
+              <Text style={styles.defaultValue}>{location}</Text>
+            </View>
+            <View style={styles.labeField}>
+              <Icon name="email" size={20} style={styles.icon} />
+              <Text style={styles.email}>{email}</Text>
+            </View>
           </View>
         );
       }}
     </Query>
   );
   render() {
-    return <View style={styles.container}>{this.getUserProfileInfo()}</View>;
+    return this.getUserProfileInfo();
   }
 }
 
