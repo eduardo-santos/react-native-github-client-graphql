@@ -1,6 +1,9 @@
 # react-native-github-client-graphql
-A react native project with a basic github user login authentication using the [Github v3 REST API](https://developer.github.com/v3/) to validate and authenticate the user email and password to get an `OAuth Access Token` from a [Github OAuth App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) that i've created in my personal developer settings panel called [React Native Github Client](https://github.com/settings/applications/976282). After that, the app will use this OAuth token to make calls to the new [Github GraphQL API](https://developer.github.com/v4/) using the [Apollo GraphQL Client](https://www.apollographql.com/docs/react/).
+A react native project with a basic github user login authentication using the [Github v3 REST API](https://developer.github.com/v3/) to validate and authenticate the user email and password to get an `OAuth Access Token` from a [Github OAuth App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) that i've created in my personal developer settings panel called [React Native Github Client](https://github.com/settings/applications/976282). After that, the app will use this OAuth token to make calls to the new [Github GraphQL API](https://developer.github.com/v4/) using the [Apollo GraphQL Client](https://www.apollographql.com/docs/react/). 
 
+Feel free to create your own Github OAuth App and update the `githupAppClient.js` information with your own if you don't want to use the one that i've created.
+
+### The Project Content
 The main idea of the project is to use the Github GraphQL API to get the logged user repository list and profile information, and show these two content informations in a [bottom tav navigator](https://reactnavigation.org/docs/en/tab-based-navigation.html).
 
 The project contains tests using `Jest`, focused on the components and the login redux actions. The components test will generate `snapshots` that can be updated when component changes are made.
