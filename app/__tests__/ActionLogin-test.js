@@ -7,13 +7,22 @@ import {
 } from "../actions/apiLogin";
 import reducer from "../reducers/apiLogin";
 
+import {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  SCOPES,
+  NOTE
+} from "../helpers/githubAppClient";
+
 describe("actions login", () => {
   const email = "eduardo.hensantos@gmail.com";
   const password = "admin123";
 
   const request = {
-    email,
-    password
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+    scopes: SCOPES,
+    note: NOTE
   };
 
   it("should reset login state", () => {
@@ -37,10 +46,12 @@ describe("actions login", () => {
   it("should create an action to login user", () => {
     const expectedAction = {
       type: POST_API_LOGIN,
+      email,
+      password,
       request
     };
 
-    expect(apiPostLogin(request)).toEqual(expectedAction);
+    expect(apiPostLogin(email, password, request)).toEqual(expectedAction);
   });
 
   it("should start login API call", () => {

@@ -2,13 +2,6 @@
 
 exports[`renders correctly 1`] = `
 <View
-  accessible={true}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
   style={
     Object {
       "alignItems": "center",
@@ -33,7 +26,7 @@ exports[`renders correctly 1`] = `
       numberOfLines={2}
       style={
         Object {
-          "color": "#3C4146",
+          "color": "#2695D2",
           "fontSize": 16,
           "fontWeight": "bold",
         }
@@ -41,26 +34,34 @@ exports[`renders correctly 1`] = `
     />
     <Text
       numberOfLines={2}
-    />
-  </View>
-  <View
-    style={
-      Object {
-        "justifyContent": "flex-end",
-      }
-    }
-  >
-    <Text
       style={
         Object {
-          "color": "#53B5E1",
-          "fontSize": 16,
+          "color": "#637381",
+          "fontSize": 14,
           "fontWeight": "normal",
         }
       }
-    >
-       + detalhes
-    </Text>
+    />
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "flex-start",
+          "marginTop": 10,
+        }
+      }
+    />
+    <Text
+      style={
+        Object {
+          "color": "#637381",
+          "fontSize": 12,
+          "fontWeight": "normal",
+          "marginTop": 6,
+        }
+      }
+    />
   </View>
 </View>
 `;
