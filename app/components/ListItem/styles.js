@@ -14,23 +14,39 @@ export default StyleSheet.create({
     marginLeft: 12,
     justifyContent: "flex-start"
   },
-  infoContainerIndicator: {
-    justifyContent: "flex-end"
-  },
-  indicator: {
-    fontWeight: "normal",
-    fontSize: 16,
-    color: "#53B5E1"
-  },
-  title: {
+  name: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "#3C4146"
+    color: "#2695D2"
   },
-  ownerLogin: {
+  description: {
     fontWeight: "normal",
     fontSize: 14,
-    color: "#3C4146"
+    color: "#637381"
+  },
+  defaultValues: {
+    fontWeight: "normal",
+    fontSize: 14,
+    color: "#637381",
+    marginRight: 16
+  },
+  updatedAt: {
+    fontWeight: "normal",
+    fontSize: 12,
+    color: "#637381",
+    marginTop: 6
+  },
+  rowInfo: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-start",
+    marginTop: 10
+  },
+  iconValueContainer: {
+    flexDirection: "row"
+  },
+  icon: {
+    paddingRight: 3
   },
   separator: {
     height: StyleSheet.hairlineWidth,

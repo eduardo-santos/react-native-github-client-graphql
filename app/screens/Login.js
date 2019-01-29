@@ -8,6 +8,13 @@ import { TextInput } from "../components/TextInput";
 import { Button } from "../components/Button";
 
 import {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  SCOPES,
+  NOTE
+} from "../helpers/githubAppClient";
+
+import {
   apiPostLogin,
   changeEmail,
   changePassword,
@@ -28,6 +35,12 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 200
+  },
+  infoText: {
+    marginTop: 36,
+    textAlign: "center",
+    bottom: 10,
+    position: "absolute"
   }
 });
 
@@ -98,10 +111,14 @@ class Login extends Component {
               !this.passwordRef.state.errorMessage
             ) {
               const request = {
-                email: this.props.email,
-                password: this.props.password
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
+                scopes: SCOPES,
+                note: NOTE
               };
-              this.props.dispatch(apiPostLogin(request));
+              this.props.dispatch(
+                apiPostLogin(this.props.email, this.props.password, request)
+              );
             }
           }
         )
@@ -118,6 +135,7 @@ class Login extends Component {
           source={require("../resources/images/company-logo.png")}
           style={styles.logo}
         />
+        <Text>Entre com suas credenciais do GitHub *</Text>
         <TextInput
           ref={r => {
             this.emailRef = r;
@@ -142,8 +160,6 @@ class Login extends Component {
           floatingLabel="Senha"
           secureTextEntry
           required
-          min={6}
-          max={10}
           checkSubmitValidation={this.state.validateForm}
           defaultValue={this.props.password}
           iconRight={{ name: "lock", color: "#2695D2" }}
@@ -156,6 +172,10 @@ class Login extends Component {
           disabled={this.props.isApiSubmiting}
           width="100%"
         />
+        <Text style={styles.infoText}>
+          * Este app não utiliza e nem compartilha suas informações. É apenas um
+          app com intuito de testar a nova API GraphQL do Github.
+        </Text>
         {this.props.isApiSubmiting ? (
           <FullScreenIndicatorOverlay text="Entrando...." />
         ) : null}

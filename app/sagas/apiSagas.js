@@ -1,4 +1,8 @@
-import { takeEvery, call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
+
+import base64 from "react-native-base64";
+
+import { updateOAuthAccessToken } from "../helpers/apolloGraphQL";
 
 // ACTIONS
 import {
@@ -7,29 +11,10 @@ import {
   POST_API_LOGIN_ERROR
 } from "../actions/apiLogin";
 
-import {
-  POST_API_LOCATION_ADD,
-  POST_API_LOCATION_ADD_SUCCESS,
-  POST_API_LOCATION_ADD_ERROR
-} from "../actions/apiLocationAdd";
-
-import {
-  GET_API_LOCATION_LIST,
-  GET_API_LOCATION_LIST_SUCCESS,
-  GET_API_LOCATION_LIST_ERROR
-} from "../actions/apiLocationList";
-
-import {
-  GET_API_LOCATION_DETAILS,
-  GET_API_LOCATION_DETAILS_SUCCESS,
-  GET_API_LOCATION_DETAILS_ERROR
-} from "../actions/apiLocationDetails";
-
 // URLS
-const BASE_URL = "https://apiiclinicmobile-nadvviantm.now.sh";
+const BASE_URL = "https://api.github.com";
 
-const URL_LIST_LOCATIONS = `${BASE_URL}/locations`;
-const URL_LOGIN = `${BASE_URL}/auth/login`;
+const URL_LOGIN = `${BASE_URL}/authorizations`;
 
 // ACCESS TOKEN
 let currentAccessToken = null;
@@ -40,17 +25,9 @@ headers.append("Content-Type", "application/json");
 headers.append("Accept", "application/json");
 
 const headersAuth = headers;
-headers.append("x-access-token", currentAccessToken);
+headers.append("Authorization", `basic ${currentAccessToken}`);
 
 // HTTP METHODS
-const createGetAuth = () => ({ method: "GET", headers: headersAuth });
-
-const createPost = request => ({
-  method: "POST",
-  headers,
-  body: JSON.stringify(request)
-});
-
 const createPostAuth = request => ({
   method: "POST",
   headers: headersAuth,
@@ -61,7 +38,7 @@ const createPostAuth = request => ({
 function updateAccessToken(accessToken) {
   if (accessToken) {
     currentAccessToken = accessToken;
-    headersAuth.set("x-access-token", currentAccessToken);
+    headersAuth.set("Authorization", `basic ${currentAccessToken}`);
   }
 }
 
@@ -70,14 +47,14 @@ function* handleCallResponse(
   response,
   actionTypeSuccess,
   actionTypeError,
-  updateToken = false
+  updateToken
 ) {
   try {
     const result = yield response.json();
 
-    if (response.status !== 200) {
-      let apiError = result.error
-        ? result.error
+    if (response.status !== 200 && response.status !== 201) {
+      let apiError = result.message
+        ? result.message
         : "Ocorreu um erro inesperado. Tente novamente.";
 
       if (response.status === 408) {
@@ -91,7 +68,7 @@ function* handleCallResponse(
       });
     } else {
       if (updateToken) {
-        updateAccessToken(result.token);
+        updateOAuthAccessToken(result.token);
       }
 
       yield put({ type: actionTypeSuccess, sagaSuccessResult: result });
@@ -105,18 +82,16 @@ function* handleCallResponse(
 }
 
 // API FETCH CALLS
-const postLogin = request => fetch(URL_LOGIN, createPost(request));
-
-const postLocationAdd = location =>
-  fetch(URL_LIST_LOCATIONS, createPostAuth(location));
-
-const getLocationList = () => fetch(URL_LIST_LOCATIONS, createGetAuth());
-
-const getLocationDetails = idLocation =>
-  fetch(`${URL_LIST_LOCATIONS}/${idLocation}`, createGetAuth());
+const postLogin = request => fetch(URL_LOGIN, createPostAuth(request));
 
 // API EFFECT FUNCTIONS
 function* postApiLogin(action) {
+  const basicAuthorizationToken = base64.encode(
+    `${action.email}:${action.password}`
+  );
+
+  updateAccessToken(basicAuthorizationToken);
+
   const response = yield call(postLogin, action.request);
   yield handleCallResponse(
     response,
@@ -126,39 +101,7 @@ function* postApiLogin(action) {
   );
 }
 
-function* postApiLocationAdd(action) {
-  const response = yield call(postLocationAdd, action.location);
-  yield handleCallResponse(
-    response,
-    POST_API_LOCATION_ADD_SUCCESS,
-    POST_API_LOCATION_ADD_ERROR
-  );
-}
-
-function* getApiLocationList() {
-  const response = yield call(getLocationList);
-  yield handleCallResponse(
-    response,
-    GET_API_LOCATION_LIST_SUCCESS,
-    GET_API_LOCATION_LIST_ERROR
-  );
-}
-
-function* getApiLocationDetails(action) {
-  const response = yield call(getLocationDetails, action.idLocation);
-  yield handleCallResponse(
-    response,
-    GET_API_LOCATION_DETAILS_SUCCESS,
-    GET_API_LOCATION_DETAILS_ERROR
-  );
-}
-
 // EXPORTING SAGAS
-export const apiSagas = [
-  takeLatest(POST_API_LOGIN, postApiLogin),
-  takeEvery(POST_API_LOCATION_ADD, postApiLocationAdd),
-  takeEvery(GET_API_LOCATION_LIST, getApiLocationList),
-  takeLatest(GET_API_LOCATION_DETAILS, getApiLocationDetails)
-];
+export const apiSagas = [takeLatest(POST_API_LOGIN, postApiLogin)];
 
 export default apiSagas;
