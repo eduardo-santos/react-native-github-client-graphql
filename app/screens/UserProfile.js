@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, RefreshControl } from "react-native";
 
 import PropTypes from "prop-types";
 
@@ -7,6 +7,8 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
 import SimpleRoundedImage from "../components/RoundedImage/SimpleRoundedImage";
+import { Button } from "../components/Button";
+
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 const styles = StyleSheet.create({
@@ -57,6 +59,20 @@ const styles = StyleSheet.create({
   },
   space: {
     height: 20
+  },
+  emptyContent: {
+    textAlign: "center",
+    marginTop: 50,
+    marginHorizontal: 18,
+    fontSize: 16
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  errorContainer: {
+    paddingHorizontal: 16
   }
 });
 
@@ -74,11 +90,41 @@ const QUERY = gql`
 `;
 
 class UserProfile extends Component {
+  renderEmptyContent = (loading, error) => {
+    if (loading) {
+      return (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.emptyContent}>Carregando...</Text>
+        </View>
+      );
+    } else {
+      return error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.emptyContent}>
+            Ocorreu um erro ao obter as informações de perfil do seu usuário.
+          </Text>
+          <Button
+            text="TENTAR NOVAMENTE"
+            onPress={this.getUserProfileInfo}
+            disabled={loading}
+            width="100%"
+            marginTop={16}
+          />
+        </View>
+      ) : (
+        <Text style={styles.emptyContent}>
+          Nenhuma informação para esse usuário foi encontrada.
+        </Text>
+      );
+    }
+  };
+
   getUserProfileInfo = () => (
     <Query query={QUERY}>
       {({ loading, error, data }) => {
-        if (loading) return <Text>Carregando...</Text>;
-        if (error) return <Text>Erro :(</Text>;
+        if (loading || error) {
+          return this.renderEmptyContent(loading, error);
+        }
 
         const { name, login, email, avatarUrl, bio, location } = data.viewer;
 

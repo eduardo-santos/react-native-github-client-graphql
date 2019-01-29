@@ -7,7 +7,7 @@ import {
 } from "react-navigation";
 
 import Login from "../screens/Login";
-import UserFeed from "../screens/UserFeed";
+import UserRepositories from "../screens/UserRepositories";
 import UserProfile from "../screens/UserProfile";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -24,7 +24,7 @@ const headerStyleOptions = (isBottomTab = false) => ({
       if (isBottomTab) {
         const { routeName } = navigation.state;
         let iconName;
-        if (routeName === "UserFeedScreen") {
+        if (routeName === "UserRepositoriesScreen") {
           iconName = "home";
         } else if (routeName === "UserProfileScreen") {
           iconName = "person";
@@ -51,11 +51,11 @@ const LoginStack = createStackNavigator(
 
 const LoggedStack = createBottomTabNavigator(
   {
-    UserFeedScreen: {
-      screen: UserFeed,
+    UserRepositoriesScreen: {
+      screen: UserRepositories,
       navigationOptions: {
-        headerTitle: "Feed",
-        tabBarLabel: "Feed"
+        headerTitle: "Repositórios",
+        tabBarLabel: "Repositórios"
       }
     },
     UserProfileScreen: {
