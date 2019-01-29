@@ -7,6 +7,8 @@ The project contains tests using `Jest`, focused on the components and the login
 
 The main project libraries are `graphql`, `apollo-boost`, `react-apollo`, `React Navigation`, and `Jest`. The redux content of the project is used only to help interact with the [Github v3 REST API](https://developer.github.com/v3/) to fetch the login authentication call.
 
+As mentioned in the login screen footer text, this app will not use and share any user information (email, password, profile information and etc). The only purpose of the project is to test and integrate the react native with the new Github GraphQL API.
+
 ## Run The Project
 Clone this repository and run the command:
 ```shell
