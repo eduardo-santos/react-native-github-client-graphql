@@ -4,7 +4,7 @@ A react native project with a basic github user login authentication using the [
 Feel free to create your own Github OAuth App and update the `githupAppClient.js` information with your own if you don't want to use the one that i've created.
 
 ### The Project Content
-The main idea of the project is to use the Github GraphQL API to get the logged user repository list and profile information, and show these two content informations in a [bottom tav navigator](https://reactnavigation.org/docs/en/tab-based-navigation.html).
+The main idea of the project is to use the Github GraphQL API to get the logged user repository list and profile information, and show these two content informations in a [bottom tav navigator](https://reactnavigation.org/docs/en/tab-based-navigation.html). The repository list will be show in a swipe to refresh list with error handling and loading data indicator. The user profile content will also handle errors and show loading data indicator.
 
 The project contains tests using `Jest`, focused on the components and the login redux actions. The components test will generate `snapshots` that can be updated when component changes are made.
 
